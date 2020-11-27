@@ -23,7 +23,7 @@ public class Sensor {
         var feature = Feature.fromGeometry(point2dToPoint(coordinates));
         feature.addStringProperty("location", location);
         feature.addStringProperty("marker-symbol", data.getMarkerSymbol());
-        feature.addStringProperty("marker-color", data.getRgbString());
+        feature.addStringProperty("marker-color", "#00ff00");//data.getRgbString());
         feature.addStringProperty("rgb-string", data.getRgbString());
         return feature;
     }

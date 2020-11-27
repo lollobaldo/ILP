@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 import java.io.FileOutputStream;
 import java.net.http.HttpClient;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -60,17 +61,18 @@ public class App {
             sensor.setCoordinates(new Point2D.Double(lng, lat));
         }
 
-        var sensorFeatures = new ArrayList<Feature>();
+        var features = NoFlyZones.toGeoJsonFeatures();
+        System.out.println(features.size());
         var startingPoint = Feature.fromGeometry(Point.fromLngLat(initialLng, initialLat));
         startingPoint.addStringProperty("marker-symbol", "star");
         startingPoint.addStringProperty("marker-color", "#0000ff");
         startingPoint.addStringProperty("rgb-string", "#0000ff");
-        sensorFeatures.add(startingPoint);
+        features.add(startingPoint);
         for (var sensor : sensorList) {
-            sensorFeatures.add(sensor.toGeoJsonFeature());
+            features.add(sensor.toGeoJsonFeature());
         }
 
-        GeoJson geojson = FeatureCollection.fromFeatures(sensorFeatures);
+        GeoJson geojson = FeatureCollection.fromFeatures(features);
         String outputJson = geojson.toJson();
         writeToOutput("res.txt", outputJson);
     }

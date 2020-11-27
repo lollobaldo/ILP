@@ -6,9 +6,13 @@ import com.mapbox.geojson.Polygon;
 import java.util.List;
 
 public class NoFlyZone {
-    private static List<Point> coordinates;
+    private List<Point> coordinates;
 
     public NoFlyZone(Polygon polygon) {
         this.coordinates = polygon.coordinates().get(0);
+    }
+
+    public List<Point> getCoordinates() {
+        return coordinates;
     }
 }
