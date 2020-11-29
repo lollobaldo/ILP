@@ -18,12 +18,16 @@ public class Sensor {
         this.coordinates = coordinates;
     }
 
+    public void visit() {
+        this.visited = true;
+    }
+
     public Feature toGeoJsonFeature() {
         var data = new DataPoint(reading.equals("null") ? 0 : Double.parseDouble(reading), battery <= 10, visited);
         var feature = Feature.fromGeometry(point2dToPoint(coordinates));
         feature.addStringProperty("location", location);
         feature.addStringProperty("marker-symbol", data.getMarkerSymbol());
-        feature.addStringProperty("marker-color", "#00ff00");//data.getRgbString());
+        feature.addStringProperty("marker-color", data.getRgbString());
         feature.addStringProperty("rgb-string", data.getRgbString());
         return feature;
     }
@@ -46,5 +50,16 @@ public class Sensor {
 
     public String getReading() {
         return reading;
+    }
+
+    @Override
+    public String toString() {
+        return "Sensor{" +
+                "coordinates=" + coordinates +
+                ", location='" + location + '\'' +
+                ", battery=" + battery +
+                ", reading='" + reading + '\'' +
+                ", visited=" + visited +
+                '}';
     }
 }
