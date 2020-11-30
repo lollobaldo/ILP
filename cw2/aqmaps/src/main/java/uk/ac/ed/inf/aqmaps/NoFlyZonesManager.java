@@ -27,15 +27,6 @@ public class NoFlyZonesManager {
         return zones.add(noFlyZone);
     }
 
-//    public boolean isLegalMove(Line2D move) {
-//        for (var zone : zones) {
-//            if (!zone.isLegalMove(move)) {
-//                return false;
-//            };
-//        }
-//        return true;
-//    }
-
     public int getBestFlyAroundAngle(Point2D start, Point2D target) {
         var move = new Line2D.Double(start, target);
         for (var zone : zones) {
@@ -55,7 +46,7 @@ public class NoFlyZonesManager {
         var features = new ArrayList<Feature>();
         for (var zone : zones) {
             System.out.println(zone);
-            Polygon polygon = Polygon.fromLngLats(Arrays.asList(zone.getCoordinates()));
+            Polygon polygon = zone.getPolygon();
             Feature feature = Feature.fromGeometry(polygon);
             feature.addStringProperty("fill", "#ff0000");
             features.add(feature);
