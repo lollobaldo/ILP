@@ -37,19 +37,6 @@ public class NoFlyZone {
         return true;
     }
 
-    public int getBestFlyAroundAngle(Point2D start, Point2D target) {
-        var directAngle = Utils.radiansBetween(start, target);
-        var directAngleDegrees = Math.toDegrees(directAngle);
-        var distanceToFurtherCorner = coordinates.stream().map(start::distance).max(Double::compare).orElse(0.0);
-        Comparator<Integer> deltaFromDirectAngle = Comparator.comparingDouble(s -> Math.abs(Utils.normaliseAngle(s - directAngleDegrees)));
-        Predicate<Integer> isGoodAngle = (angle) -> isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
-        var result = IntStream.range(0, 36).map(a -> a*10).boxed()
-                .filter(isGoodAngle)
-                .min(deltaFromDirectAngle)
-                .orElse(Utils.round10(directAngleDegrees));
-        return result;
-    }
-
     public List<Point2D> getCoordinates() {
         return coordinates;
     }

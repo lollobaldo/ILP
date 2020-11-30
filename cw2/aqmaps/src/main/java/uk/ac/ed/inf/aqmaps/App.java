@@ -68,7 +68,7 @@ public class App {
         startingPointMarker.addStringProperty("rgb-string", "#0000ff");
         features.add(startingPointMarker);
 
-//        features.add(Feature.fromGeometry(confinementArea));
+        features.add(Feature.fromGeometry(confinementArea));
 
         var drone = new Drone(startingPoint, noFlyZonesManager, sensors, randomSeed);
         var dronePath = drone.planFlight().toGeoJson();

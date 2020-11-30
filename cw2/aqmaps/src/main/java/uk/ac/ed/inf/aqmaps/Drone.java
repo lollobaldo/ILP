@@ -3,6 +3,8 @@ package uk.ac.ed.inf.aqmaps;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Drone {
@@ -23,7 +25,7 @@ public class Drone {
     public Drone(Point2D startingPoint, NoFlyZonesManager noFlyZonesManager, Set<Sensor> sensors, int randomSeed) {
         this.startingPoint = Objects.requireNonNull(startingPoint);
         this.noFlyZonesManager = Objects.requireNonNull(noFlyZonesManager);
-        this.sensors = new HashSet<Sensor>(Objects.requireNonNull(sensors));
+        this.sensors = new HashSet<>(Objects.requireNonNull(sensors));
 
         for (var sensor : sensors) {
             Objects.requireNonNull(sensor);
@@ -60,7 +62,7 @@ public class Drone {
     }
 
     private Point2D moveTowards(Point2D targetDestination) {
-        var angle = noFlyZonesManager.getBestFlyAroundAngle(droneLocation, targetDestination);
+        var angle = getBestAngleTo(targetDestination);
         var radians = Math.toRadians(angle);
         System.out.print("Optimal angle: ");
         System.out.println(angle);
@@ -71,11 +73,43 @@ public class Drone {
         return move;
     }
 
-    private double getValidAngleTo(Point2D destination) {
-        var degrees = Math.toDegrees(radiansTo(destination));
-        var validDegrees = Math.round(degrees/10.0) * 10;
-        return Math.toRadians(validDegrees);
+    public int getBestAngleTo(Point2D target) {
+        var directAngle = Utils.radiansBetween(droneLocation, target);
+        if (droneLocation.distance(target) < STEP_LENGTH) {
+            var newX = droneLocation.getX() + STEP_LENGTH * Math.cos(directAngle);
+            var newY = droneLocation.getY() + STEP_LENGTH * Math.sin(directAngle);
+            target = new Point2D.Double(newX, newY);
+        }
+        var move = new Line2D.Double(droneLocation, target);
+        for (var zone : noFlyZonesManager.getNoFlyZones()) {
+            if (!zone.isLegalMove(move)) {
+                var angle = getBestFlyAroundAngle(droneLocation, target, zone);
+                return angle;
+            };
+        }
+        var straightAngle = Utils.round10(Math.toDegrees(directAngle));
+        return straightAngle;
     }
+
+    public int getBestFlyAroundAngle(Point2D start, Point2D target, NoFlyZone noFlyZone) {
+        var directAngle = Utils.radiansBetween(start, target);
+        var directAngleDegrees = Math.toDegrees(directAngle);
+        var zoneCoordinates = noFlyZone.getCoordinates();
+        var distanceToFurtherCorner = zoneCoordinates.stream().map(start::distance).max(Double::compare).orElse(0.0);
+        Comparator<Integer> deltaFromDirectAngle = Comparator.comparingDouble(s -> Math.abs(Utils.normaliseAngle(s - directAngleDegrees)));
+        Predicate<Integer> avoidsNoFlyZone = (angle) -> noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
+        Predicate<Integer> avoidsOtherZones = (angle) -> noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, 0.0003));
+        var result = IntStream.range(0, 36).map(a -> a*10).boxed()
+                .filter(avoidsNoFlyZone).filter(avoidsOtherZones)
+                .min(deltaFromDirectAngle).get();
+        return result;
+    }
+
+//    private double getValidAngleTo(Point2D destination) {
+//        var degrees = Math.toDegrees(radiansTo(destination));
+//        var validDegrees = Math.round(degrees/10.0) * 10;
+//        return Math.toRadians(validDegrees);
+//    }
 
 //    private boolean isLegalMove(Point2D targetDestination) {
 //        return isLegalMove(droneLocation, targetDestination);
@@ -93,15 +127,12 @@ public class Drone {
         return false;
     }
 
-    private double radiansTo(Point2D destination) {
-        return Math.atan2(destination.getY() - droneLocation.getY(), destination.getX() - droneLocation.getX());
-    }
-
     private Sensor closestSensor() {
         if (sensors.size() == 0) {
             return null;
         }
-        return Collections.min(sensors, Comparator.comparingDouble(this::distanceToSensor));
+        var comparingOnDistanceFromDrone = Comparator.comparingDouble(this::distanceToSensor);
+        return Collections.min(sensors, comparingOnDistanceFromDrone);
     }
 
     private double distanceToSensor(Sensor sensor) {
