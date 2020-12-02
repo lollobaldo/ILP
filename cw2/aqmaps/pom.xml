@@ -51,7 +51,7 @@
               <artifactId>maven-jar-plugin</artifactId>
               <version>3.2.0</version>
               <configuration>
-                  <archive> <index>true</index> <manifest><mainClass>uk.ac.ed.inf.heatmap.App</mainClass> </manifest></archive>
+                  <archive> <index>true</index> <manifest><mainClass>uk.ac.ed.inf.aqmaps.App</mainClass> </manifest></archive>
               </configuration>
           </plugin>
           <plugin>

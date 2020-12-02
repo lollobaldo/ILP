@@ -12,7 +12,7 @@ public class Sensor {
     private String location;
     private Double battery;
     private String reading;
-    private boolean visited;
+    private Boolean visited;
 
     public Sensor(Point2D coordinates) {
         this.coordinates = coordinates;

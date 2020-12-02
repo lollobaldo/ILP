@@ -47,6 +47,10 @@ public class Utils {
         return tan >= 0 ? tan : tan + 2*Math.PI;
     }
 
+    public static double degreesBetween(Point2D start, Point2D end){
+        return Math.toDegrees(radiansBetween(start, end));
+    }
+
     public static Line2D getLine(Point2D start, double angle, double length) {
         var endX = start.getX() + length * Math.cos(Math.toRadians(angle));
         var endY = start.getY() + length * Math.sin(Math.toRadians(angle));

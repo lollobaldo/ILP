@@ -1,14 +1,10 @@
 package uk.ac.ed.inf.aqmaps;
 
-import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.*;
-import java.util.function.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 
 public class NoFlyZone {

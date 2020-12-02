@@ -4,8 +4,10 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 
 public class Drone {
     private static final int ALLOWED_NUMBER_OF_MOVES = 150;
@@ -20,7 +22,6 @@ public class Drone {
 
     private int movesLeft = ALLOWED_NUMBER_OF_MOVES;
     private Point2D droneLocation;
-    private FlightPlan flightPlan;
 
     public Drone(Point2D startingPoint, NoFlyZonesManager noFlyZonesManager, Set<Sensor> sensors, int randomSeed) {
         this.startingPoint = Objects.requireNonNull(startingPoint);
@@ -34,24 +35,22 @@ public class Drone {
         this.randomSeed = Objects.requireNonNull(randomSeed);
 
         droneLocation = startingPoint;
-        flightPlan = new FlightPlan(startingPoint);
     }
 
     public FlightPlan planFlight() {
+        var flightPlan = new FlightPlan(startingPoint);
         while (movesLeft != 0) {
             Sensor closestSensor = closestSensor();
             Point2D targetDestination;
             if (closestSensor != null) {
-                System.out.print("Going to ");
-                System.out.println(closestSensor.getLocation());
                 targetDestination = closestSensor.getCoordinates();
             } else {
                 targetDestination = startingPoint;
             }
             droneLocation = moveTowards(targetDestination);
             flightPlan.add(droneLocation);
-            if (closestSensor != null) {
-                takeReading(closestSensor);
+            if (closestSensor != null && takeReading(closestSensor)) {
+                flightPlan.read(closestSensor.getLocation());
             }
             movesLeft -= 1;
             if (sensors.size() == 0 && droneLocation.distance(startingPoint) < SENSOR_RANGE) {
@@ -73,7 +72,7 @@ public class Drone {
         return move;
     }
 
-    public int getBestAngleTo(Point2D target) {
+    public double getBestAngleTo(Point2D target) {
         var directAngle = Utils.radiansBetween(droneLocation, target);
         if (droneLocation.distance(target) < STEP_LENGTH) {
             var newX = droneLocation.getX() + STEP_LENGTH * Math.cos(directAngle);
@@ -91,38 +90,28 @@ public class Drone {
         return straightAngle;
     }
 
-    public int getBestFlyAroundAngle(Point2D start, Point2D target, NoFlyZone noFlyZone) {
+    public double getBestFlyAroundAngle(Point2D start, Point2D target, NoFlyZone noFlyZone) {
         var directAngle = Utils.radiansBetween(start, target);
         var directAngleDegrees = Math.toDegrees(directAngle);
         var zoneCoordinates = noFlyZone.getCoordinates();
         var distanceToFurtherCorner = zoneCoordinates.stream().map(start::distance).max(Double::compare).orElse(0.0);
-        Comparator<Integer> deltaFromDirectAngle = Comparator.comparingDouble(s -> Math.abs(Utils.normaliseAngle(s - directAngleDegrees)));
-        Predicate<Integer> avoidsNoFlyZone = (angle) -> noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
-        Predicate<Integer> avoidsOtherZones = (angle) -> noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, 0.0003));
-        var result = IntStream.range(0, 36).map(a -> a*10).boxed()
+        Comparator<Double> deltaFromDirectAngle = Comparator.comparingDouble(s -> Math.abs(Utils.normaliseAngle(s - directAngleDegrees)));
+        Predicate<Double> avoidsNoFlyZone = (angle) -> noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
+        Predicate<Double> avoidsOtherZones = (angle) -> noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, 0.0003));
+        var result = legalAngles()
                 .filter(avoidsNoFlyZone).filter(avoidsOtherZones)
                 .min(deltaFromDirectAngle).get();
         return result;
     }
 
-//    private double getValidAngleTo(Point2D destination) {
-//        var degrees = Math.toDegrees(radiansTo(destination));
-//        var validDegrees = Math.round(degrees/10.0) * 10;
-//        return Math.toRadians(validDegrees);
-//    }
-
-//    private boolean isLegalMove(Point2D targetDestination) {
-//        return isLegalMove(droneLocation, targetDestination);
-//    }
-//
-//    private boolean isLegalMove(Point2D startingPoint, Point2D targetDestination) {
-//        return noFlyZonesManager.isLegalMove(new Line2D.Double(startingPoint, targetDestination));
-//    }
+    private Stream<Double> legalAngles() {
+        return DoubleStream.iterate(0, x -> x + STEP_ANGLE).boxed();
+    }
 
     private boolean takeReading(Sensor sensor) {
         if (distanceToSensor(sensor) < SENSOR_RANGE) {
             sensor.visit();
-            sensors.remove(sensor);
+            return sensors.remove(sensor);
         }
         return false;
     }

@@ -2,8 +2,10 @@ package uk.ac.ed.inf.aqmaps;
 
 import java.awt.geom.Point2D;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.net.http.HttpClient;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -12,15 +14,6 @@ import com.google.gson.reflect.TypeToken;
 import com.mapbox.geojson.*;
 
 public class App {
-    /** Bounding-rect Points */
-    private static final Point TOP_LEFT = Point.fromLngLat(-3.192473, 55.946233);
-    private static final Point TOP_RIGHT = Point.fromLngLat(-3.184319, 55.946233);
-    private static final Point BOTTOM_LEFT = Point.fromLngLat(-3.192473, 55.942617);
-    private static final Point BOTTOM_RIGHT = Point.fromLngLat(-3.184319, 55.942617);
-    private static final Polygon confinementArea = Polygon.fromLngLats(Arrays.asList(Arrays.asList(
-            TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT, TOP_LEFT
-    )));
-
     private static final HttpClient client = HttpClient.newHttpClient();
 
     public static void main(String[] args) throws Exception {
@@ -44,9 +37,10 @@ public class App {
 
         Loader.setServer("http://localhost:" + serverPort + "/");
 
-        var sesorsData = Loader.loadDayData(day, month, year);
+        var sensorsData = Loader.loadDayData(day, month, year);
+        System.out.println(sensorsData);
         var targetClassType = new TypeToken<Set<Sensor>>() {}.getType();
-        Set<Sensor> sensors = new Gson().fromJson(sesorsData, targetClassType);
+        Set<Sensor> sensors = new Gson().fromJson(sensorsData, targetClassType);
 
         for (var sensor : sensors) {
             var json = Loader.loadSensorDetails(sensor.getLocation());
@@ -68,11 +62,9 @@ public class App {
         startingPointMarker.addStringProperty("rgb-string", "#0000ff");
         features.add(startingPointMarker);
 
-        features.add(Feature.fromGeometry(confinementArea));
-
         var drone = new Drone(startingPoint, noFlyZonesManager, sensors, randomSeed);
-        var dronePath = drone.planFlight().toGeoJson();
-        features.add(Feature.fromGeometry(dronePath));
+        var droneFlightPlan = drone.planFlight();
+        features.add(Feature.fromGeometry(droneFlightPlan.toGeoJson()));
 
         for (var sensor : sensors) {
             features.add(sensor.toGeoJsonFeature());
@@ -81,16 +73,12 @@ public class App {
         GeoJson geojson = FeatureCollection.fromFeatures(features);
         String outputJson = geojson.toJson();
         writeToOutput("res.txt", outputJson);
-
-        Point2D p = new Point2D.Double(0,0);
-        Point2D q = new Point2D.Double(1,-1);
-        System.out.println(Utils.radiansBetween(p, q));
-        System.out.println(Math.toDegrees(Utils.radiansBetween(p, q)));
-
-        int aaa = Arrays.asList(10, 30).stream()
-                .min(Comparator.comparingDouble(a -> Math.abs(14 - a)))
-                .orElseThrow(() -> new NoSuchElementException("No value present"));
-        System.out.println(aaa);
+        var flightPathFile = "flightpath-" + day + "-" + month + "-" + year + ".txt";
+        var flightPath = droneFlightPlan.fileFlightPlan().collect(Collectors.joining("\n"));
+        try (PrintWriter out = new PrintWriter(flightPathFile)) {
+            out.println(flightPath);
+        }
+        writeToOutput("res.txt", outputJson);
     }
 
     public static void writeToOutput(String path, String output) throws Exception {

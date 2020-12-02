@@ -22,6 +22,7 @@ public class Loader {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(server + path))
                 .build();
+        System.out.println(URI.create(server + path));
         var response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return(response.body());
     }
