@@ -5,7 +5,6 @@ import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -18,12 +17,11 @@ public class Drone {
     private final Point2D startingPoint;
     private final NoFlyZonesManager noFlyZonesManager;
     private final HashSet<Sensor> sensors;
-    private final int randomSeed;
 
     private int movesLeft = ALLOWED_NUMBER_OF_MOVES;
     private Point2D droneLocation;
 
-    public Drone(Point2D startingPoint, NoFlyZonesManager noFlyZonesManager, Set<Sensor> sensors, int randomSeed) {
+    public Drone(Point2D startingPoint, NoFlyZonesManager noFlyZonesManager, Set<Sensor> sensors) {
         this.startingPoint = Objects.requireNonNull(startingPoint);
         this.noFlyZonesManager = Objects.requireNonNull(noFlyZonesManager);
         this.sensors = new HashSet<>(Objects.requireNonNull(sensors));
@@ -32,25 +30,23 @@ public class Drone {
             Objects.requireNonNull(sensor);
         }
 
-        this.randomSeed = Objects.requireNonNull(randomSeed);
-
         droneLocation = startingPoint;
     }
 
     public FlightPlan planFlight() {
         var flightPlan = new FlightPlan(startingPoint);
         while (movesLeft != 0) {
-            Sensor closestSensor = closestSensor();
+            var closestSensor = closestSensor();
             Point2D targetDestination;
-            if (closestSensor != null) {
-                targetDestination = closestSensor.getCoordinates();
+            if (closestSensor.isPresent()) {
+                targetDestination = closestSensor.get().getCoordinates();
             } else {
                 targetDestination = startingPoint;
             }
             droneLocation = moveTowards(targetDestination);
             flightPlan.add(droneLocation);
-            if (closestSensor != null && takeReading(closestSensor)) {
-                flightPlan.read(closestSensor.getLocation());
+            if (closestSensor.isPresent() && takeReading(closestSensor.get())) {
+                flightPlan.read(closestSensor.get().getLocation());
             }
             movesLeft -= 1;
             if (sensors.size() == 0 && droneLocation.distance(startingPoint) < SENSOR_RANGE) {
@@ -82,12 +78,10 @@ public class Drone {
         var move = new Line2D.Double(droneLocation, target);
         for (var zone : noFlyZonesManager.getNoFlyZones()) {
             if (!zone.isLegalMove(move)) {
-                var angle = getBestFlyAroundAngle(droneLocation, target, zone);
-                return angle;
-            };
+                return getBestFlyAroundAngle(droneLocation, target, zone);
+            }
         }
-        var straightAngle = Utils.round10(Math.toDegrees(directAngle));
-        return straightAngle;
+        return Utils.round10(Math.toDegrees(directAngle));
     }
 
     public double getBestFlyAroundAngle(Point2D start, Point2D target, NoFlyZone noFlyZone) {
@@ -98,10 +92,10 @@ public class Drone {
         Comparator<Double> deltaFromDirectAngle = Comparator.comparingDouble(s -> Math.abs(Utils.normaliseAngle(s - directAngleDegrees)));
         Predicate<Double> avoidsNoFlyZone = (angle) -> noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
         Predicate<Double> avoidsOtherZones = (angle) -> noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, 0.0003));
-        var result = legalAngles()
+        //noinspection OptionalGetWithoutIsPresent
+        return legalAngles()
                 .filter(avoidsNoFlyZone).filter(avoidsOtherZones)
                 .min(deltaFromDirectAngle).get();
-        return result;
     }
 
     private Stream<Double> legalAngles() {
@@ -116,12 +110,12 @@ public class Drone {
         return false;
     }
 
-    private Sensor closestSensor() {
+    private Optional<Sensor> closestSensor() {
         if (sensors.size() == 0) {
-            return null;
+            return Optional.empty();
         }
         var comparingOnDistanceFromDrone = Comparator.comparingDouble(this::distanceToSensor);
-        return Collections.min(sensors, comparingOnDistanceFromDrone);
+        return Optional.of(Collections.min(sensors, comparingOnDistanceFromDrone));
     }
 
     private double distanceToSensor(Sensor sensor) {

@@ -6,7 +6,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -30,18 +29,6 @@ public class Utils {
                 .collect(Collectors.toList());
     }
 
-    public static double radiansBetween(Point start, Point end) {
-        return radiansBetween(pointToPoint2d(start), pointToPoint2d(end));
-    }
-
-    public static double radiansBetween(Point start, Point2D end) {
-        return radiansBetween(pointToPoint2d(start), end);
-    }
-
-    public static double radiansBetween(Point2D start, Point end) {
-        return radiansBetween(start, pointToPoint2d(end));
-    }
-
     public static double radiansBetween(Point2D start, Point2D end) {
         var tan = Math.atan2(end.getY() - start.getY(), end.getX() - start.getX());
         return tan >= 0 ? tan : tan + 2*Math.PI;
@@ -55,7 +42,7 @@ public class Utils {
         var endX = start.getX() + length * Math.cos(Math.toRadians(angle));
         var endY = start.getY() + length * Math.sin(Math.toRadians(angle));
         return new Line2D.Double(start, new Point2D.Double(endX, endY));
-    };
+    }
 
     public static double normaliseAngle(double degrees) {
         var mod = degrees % 360;

@@ -8,10 +8,10 @@ import java.util.*;
 
 
 public class NoFlyZone {
-    private Polygon polygon;
-    private List<Point2D> coordinates;
-    private List<Line2D> boundaries = new ArrayList<>();
-    private String name;
+    private final Polygon polygon;
+    private final List<Point2D> coordinates;
+    private final List<Line2D> boundaries = new ArrayList<>();
+    private final String name;
 
     public NoFlyZone(Polygon polygon, String name) {
         this.polygon = Objects.requireNonNull(polygon);
@@ -28,7 +28,7 @@ public class NoFlyZone {
         for (var boundary : boundaries) {
             if (boundary.intersectsLine(move)) {
                 return false;
-            };
+            }
         }
         return true;
     }

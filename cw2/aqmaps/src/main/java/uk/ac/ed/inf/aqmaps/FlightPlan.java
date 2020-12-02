@@ -1,19 +1,16 @@
 package uk.ac.ed.inf.aqmaps;
 
-import com.mapbox.geojson.Geometry;
 import com.mapbox.geojson.LineString;
-import com.mapbox.geojson.MultiLineString;
 
 import java.awt.geom.Point2D;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FlightPlan {
-    private Point2D startingPoint;
-    private List<Point2D> flightPlan = new ArrayList<>();
-    private Deque<FlightPlanComponent> flightPlan1 = new ArrayDeque<>();
+    private final Point2D startingPoint;
+    private final List<Point2D> flightPlan = new ArrayList<>();
+    private final Deque<FlightPlanComponent> flightPlan1 = new ArrayDeque<>();
 
     public FlightPlan(Point2D startingPoint) {
         this.startingPoint = startingPoint;
@@ -35,6 +32,7 @@ public class FlightPlan {
     }
 
     public void read(String sensorLocation) {
+        assert flightPlan1.size() > 0;
         flightPlan1.peekLast().sensor = sensorLocation;
     }
 
@@ -46,7 +44,7 @@ public class FlightPlan {
         return flightPlan1.stream().map(FlightPlanComponent::toString);
     }
 
-    private class FlightPlanComponent {
+    private static class FlightPlanComponent {
         public int index;
         public Point2D start;
         public int angle;
@@ -55,9 +53,8 @@ public class FlightPlan {
 
         @Override
         public String toString() {
-            var components = Arrays.asList(index, start.getX(), start.getY(), angle, end.getX(), end.getY(), sensor)
-                    .stream().map(String::valueOf).collect(Collectors.toList());
-            return String.join(",", components);
+            return Stream.of(index, start.getX(), start.getY(), angle, end.getX(), end.getY(), sensor)
+                    .map(String::valueOf).collect(Collectors.joining(","));
         }
     }
 }

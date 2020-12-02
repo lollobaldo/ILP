@@ -1,7 +1,6 @@
 package uk.ac.ed.inf.aqmaps;
 
 import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.Point;
 
 import java.awt.geom.Point2D;
 
@@ -9,13 +8,17 @@ import static uk.ac.ed.inf.aqmaps.Utils.point2dToPoint;
 
 public class Sensor {
     private Point2D coordinates;
-    private String location;
-    private Double battery;
-    private String reading;
-    private Boolean visited;
+    private final String location;
+    private final double battery;
+    private final String reading;
+    private boolean visited;
 
-    public Sensor(Point2D coordinates) {
+    public Sensor(Point2D coordinates, String location, double battery, String reading, boolean visited) {
         this.coordinates = coordinates;
+        this.location = location;
+        this.battery = battery;
+        this.reading = reading;
+        this.visited = visited;
     }
 
     public void visit() {
@@ -42,14 +45,6 @@ public class Sensor {
 
     public String getLocation() {
         return location;
-    }
-
-    public Double getBattery() {
-        return battery;
-    }
-
-    public String getReading() {
-        return reading;
     }
 
     @Override
