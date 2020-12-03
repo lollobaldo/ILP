@@ -45,7 +45,7 @@ public class App {
         Loader.setServer("http://localhost:" + serverPort + "/");
 
         try {
-            if (year.equals(0000)) {
+            if (year.equals("0000")) {
                 getSubmissionResults(startingPoint);
             } else {
                 runDrone(day, month,year, startingPoint);
@@ -61,6 +61,7 @@ public class App {
         final String year = String.valueOf(2020);
         for (int i = 1; i <= 12; i++) {
             String day = String.valueOf(i);
+            day = day.length() == 2 ? day : "0" + day;
             String month = day;
             runDrone(day, month, year, startingPoint);
         }
