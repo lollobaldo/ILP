@@ -1,6 +1,5 @@
 package uk.ac.ed.inf.aqmaps;
 
-import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.*;
@@ -93,7 +92,7 @@ public class Drone {
     }
 
     private Stream<Double> legalAngles() {
-        return DoubleStream.iterate(0, x -> x + STEP_ANGLE).takeWhile(angle -> angle < 360).boxed();
+        return DoubleStream.iterate(0, angle -> angle < 360, x -> x + STEP_ANGLE).boxed();
     }
 
     private boolean takeReading(Sensor sensor) {

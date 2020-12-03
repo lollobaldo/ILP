@@ -22,14 +22,14 @@ public class NoFlyZonesManager {
     public NoFlyZonesManager(String geoJson) {
         Objects.requireNonNull(geoJson);
         zones = new HashSet<>();
-        zones.add(new NoFlyZone(confinementArea, "Confinement area"));
+        zones.add(new NoFlyZone(confinementArea));
         var zonesFeatures = FeatureCollection.fromJson(geoJson).features();
         assert zonesFeatures != null;
         for (var zone : zonesFeatures) {
             if (!(zone.geometry() instanceof com.mapbox.geojson.Polygon)) {
                 throw new IllegalArgumentException("List does not contain polygons");
             }
-            zones.add(new NoFlyZone((Polygon) zone.geometry(), 	zone.getStringProperty("name")));
+            zones.add(new NoFlyZone((Polygon) zone.geometry()));
         }
     }
 

@@ -2,11 +2,9 @@ package uk.ac.ed.inf.aqmaps;
 
 import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -23,7 +21,7 @@ public class App {
         return "flightpath-" + day + "-" + month + "-" + year + ".txt";
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // Check that all arguments are provided
         if(args.length != 7) {
             System.err.println("Error: wrong arguments provided");
@@ -111,7 +109,6 @@ public class App {
             System.err.println("Error while writing to file.");
             System.err.println("Filename: " + fileName);
             System.err.println("Content: " + output);
-            System.err.println(exception);
         }
     }
 }

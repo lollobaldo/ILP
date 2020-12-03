@@ -8,14 +8,11 @@ import java.util.*;
 
 
 public class NoFlyZone {
-    private final Polygon polygon;
     private final List<Point2D> coordinates;
     private final List<Line2D> boundaries = new ArrayList<>();
-    private final String name;
 
-    public NoFlyZone(Polygon polygon, String name) {
-        this.polygon = Objects.requireNonNull(polygon);
-        this.name = Objects.requireNonNull(name);
+    public NoFlyZone(Polygon polygon) {
+        Objects.requireNonNull(polygon);
         this.coordinates = Utils.pointsToPoints2d(polygon.coordinates().get(0));
         for (int i=0; i < this.coordinates.size() - 1; i++) {
             var p1 = coordinates.get(i);
@@ -44,12 +41,5 @@ public class NoFlyZone {
      */
     public List<Point2D> getCoordinates() {
         return coordinates;
-    }
-    
-    /** 
-     * @return Polygon
-     */
-    public Polygon getPolygon() {
-        return polygon;
     }
 }

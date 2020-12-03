@@ -36,7 +36,7 @@ public class Utils {
                 .map(Utils::pointToPoint2d)
                 .collect(Collectors.toList());
     }
-    
+
     /** 
      * @param start
      * @param end
