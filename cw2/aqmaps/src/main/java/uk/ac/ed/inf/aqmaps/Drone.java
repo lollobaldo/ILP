@@ -33,6 +33,10 @@ public class Drone {
         droneLocation = startingPoint;
     }
 
+    
+    /** 
+     * @return FlightPlan
+     */
     public FlightPlan planFlight() {
         var flightPlan = new FlightPlan(startingPoint);
         while (movesLeft != 0) {
@@ -57,12 +61,22 @@ public class Drone {
     }
 
 
+    
+    /** 
+     * @param targetDestination
+     * @return Point2D
+     */
     private Point2D moveTowards(Point2D targetDestination) {
         var angle = getBestAngleTo(targetDestination);
         var radians = Math.toRadians(angle);
         return step(radians);
     }
 
+    
+    /** 
+     * @param target
+     * @return double
+     */
     public double getBestAngleTo(Point2D target) {
         var directAngle = Utils.radiansBetween(droneLocation, target);
         if (droneLocation.distance(target) < STEP_LENGTH) {
@@ -77,6 +91,13 @@ public class Drone {
         return Utils.round10(Math.toDegrees(directAngle));
     }
 
+    
+    /** 
+     * @param start
+     * @param target
+     * @param noFlyZone
+     * @return double
+     */
     public double getBestFlyAroundAngle(Point2D start, Point2D target, NoFlyZone noFlyZone) {
         var directAngle = Utils.radiansBetween(start, target);
         var directAngleDegrees = Math.toDegrees(directAngle);
@@ -91,10 +112,19 @@ public class Drone {
                 .min(deltaFromDirectAngle).get();
     }
 
+    
+    /** 
+     * @return Stream<Double>
+     */
     private Stream<Double> legalAngles() {
         return DoubleStream.iterate(0, angle -> angle < 360, x -> x + STEP_ANGLE).boxed();
     }
 
+    
+    /** 
+     * @param sensor
+     * @return boolean
+     */
     private boolean takeReading(Sensor sensor) {
         if (distanceToSensor(sensor) < SENSOR_RANGE) {
             sensor.visit();
@@ -103,6 +133,10 @@ public class Drone {
         return false;
     }
 
+    
+    /** 
+     * @return Optional<Sensor>
+     */
     private Optional<Sensor> closestSensor() {
         if (sensors.size() == 0) {
             return Optional.empty();
@@ -111,12 +145,22 @@ public class Drone {
         return Optional.of(Collections.min(sensors, comparingOnDistanceFromDrone));
     }
 
+    
+    /** 
+     * @param radians
+     * @return Point2D
+     */
     private Point2D step(double radians) {
         var newX = droneLocation.getX() + STEP_LENGTH * Math.cos(radians);
         var newY = droneLocation.getY() + STEP_LENGTH * Math.sin(radians);
         return new Point2D.Double(newX, newY);
     }
 
+    
+    /** 
+     * @param sensor
+     * @return double
+     */
     private double distanceToSensor(Sensor sensor) {
         return droneLocation.distance(sensor.getCoordinates());
     }

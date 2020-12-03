@@ -13,14 +13,32 @@ import com.google.gson.reflect.TypeToken;
 import com.mapbox.geojson.*;
 
 public class App {
+    
+    /** 
+     * @param day
+     * @param month
+     * @param year
+     * @return String
+     */
     private static String readingsFile(String day, String month, String year) {
         return "readings-" + day + "-" + month + "-" + year + ".txt";
     }
 
+    
+    /** 
+     * @param day
+     * @param month
+     * @param year
+     * @return String
+     */
     private static String flightPathFile(String day, String month, String year) {
         return "flightpath-" + day + "-" + month + "-" + year + ".txt";
     }
 
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         // Check that all arguments are provided
         if(args.length != 7) {
@@ -55,6 +73,12 @@ public class App {
         }
     }
 
+    
+    /** 
+     * @param startingPoint
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private static void getSubmissionResults(Point2D startingPoint) throws IOException, InterruptedException {
         final String year = String.valueOf(2020);
         for (int i = 1; i <= 12; i++) {
@@ -65,6 +89,15 @@ public class App {
         }
     }
 
+    
+    /** 
+     * @param day
+     * @param month
+     * @param year
+     * @param startingPoint
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private static void runDrone(String day, String month, String year, Point2D startingPoint) throws IOException, InterruptedException {
         var sensors = loadSensorData(day, month, year);
         var noFlyZonesManager = new NoFlyZonesManager(Loader.loadNoFlyZones());
@@ -86,6 +119,15 @@ public class App {
         writeToOutput(flightPathFile(day, month, year), flightPath);
     }
 
+    
+    /** 
+     * @param day
+     * @param month
+     * @param year
+     * @return Set<Sensor>
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private static Set<Sensor> loadSensorData(String day, String month, String year) throws IOException, InterruptedException {
         var sensorsData = Loader.loadDayData(day, month, year);
         var targetClassType = new TypeToken<Set<Sensor>>() {}.getType();
@@ -102,6 +144,11 @@ public class App {
         return sensors;
     }
 
+    
+    /** 
+     * @param fileName
+     * @param output
+     */
     public static void writeToOutput(String fileName, String output) {
         try (PrintWriter out = new PrintWriter(fileName)) {
             out.println(output);

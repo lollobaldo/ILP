@@ -15,6 +15,10 @@ public class FlightPlan {
         this.startingPoint = startingPoint;
     }
 
+    
+    /** 
+     * @param point
+     */
     public void add(Point2D point) {
         var inProgress = new FlightPlanComponent();
         inProgress.index = flightPlan.size();
@@ -38,6 +42,10 @@ public class FlightPlan {
         flightPlan.peekLast().sensor = sensorLocation;
     }
 
+    
+    /** 
+     * @return LineString
+     */
     public LineString toGeoJson() {
         var points = flightPlan.stream()
                 .map(FlightPlanComponent::getEnd)
