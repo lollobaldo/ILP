@@ -34,6 +34,11 @@ public class NoFlyZonesManager {
         }
     }
 
+    
+    /** 
+     * @param move
+     * @return boolean
+     */
     public boolean isLegalMove(Line2D move) {
         for (var zone : zones) {
             if (!zone.isLegalMove(move)) {
@@ -43,6 +48,10 @@ public class NoFlyZonesManager {
         return true;
     }
 
+    
+    /** 
+     * @return List<Feature>
+     */
     public List<Feature> toGeoJsonFeatures() {
         var features = new ArrayList<Feature>();
         for (var zone : zones) {
@@ -55,6 +64,10 @@ public class NoFlyZonesManager {
         return features;
     }
 
+    
+    /** 
+     * @return Collection<NoFlyZone>
+     */
     public Collection<NoFlyZone> getNoFlyZones() {
         return zones;
     }

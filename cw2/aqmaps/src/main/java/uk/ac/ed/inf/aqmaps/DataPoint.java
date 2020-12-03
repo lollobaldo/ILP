@@ -56,10 +56,18 @@ public class DataPoint {
         }
     }
 
+    
+    /** 
+     * @return String The String representation for the marker rgb color.
+     */
     public String getRgbString() {
         return this.rgbString;
     }
 
+    
+    /** 
+     * @return String The String representation for the marker symbol.
+     */
     public String getMarkerSymbol() {
         return this.markerSymbol;
     }

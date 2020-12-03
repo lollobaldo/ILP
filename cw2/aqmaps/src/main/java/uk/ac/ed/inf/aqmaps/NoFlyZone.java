@@ -24,6 +24,11 @@ public class NoFlyZone {
         }
     }
 
+    
+    /** 
+     * @param move
+     * @return boolean
+     */
     public boolean isLegalMove(Line2D move) {
         for (var boundary : boundaries) {
             if (boundary.intersectsLine(move)) {
@@ -33,13 +38,25 @@ public class NoFlyZone {
         return true;
     }
 
+    
+    /** 
+     * @return List<Point2D>
+     */
     public List<Point2D> getCoordinates() {
         return coordinates;
     }
+    
+    /** 
+     * @return Polygon
+     */
     public Polygon getPolygon() {
         return polygon;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String toString() {
         return "NoFlyZone: " + name + '.';

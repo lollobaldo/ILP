@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.aqmaps;
 
+import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.*;
@@ -56,24 +57,17 @@ public class Drone {
         return flightPlan;
     }
 
+
     private Point2D moveTowards(Point2D targetDestination) {
         var angle = getBestAngleTo(targetDestination);
         var radians = Math.toRadians(angle);
-        System.out.print("Optimal angle: ");
-        System.out.println(angle);
-        Point2D move;
-        var newX = droneLocation.getX() + STEP_LENGTH * Math.cos(radians);
-        var newY = droneLocation.getY() + STEP_LENGTH * Math.sin(radians);
-        move = new Point2D.Double(newX, newY);
-        return move;
+        return step(radians);
     }
 
     public double getBestAngleTo(Point2D target) {
         var directAngle = Utils.radiansBetween(droneLocation, target);
         if (droneLocation.distance(target) < STEP_LENGTH) {
-            var newX = droneLocation.getX() + STEP_LENGTH * Math.cos(directAngle);
-            var newY = droneLocation.getY() + STEP_LENGTH * Math.sin(directAngle);
-            target = new Point2D.Double(newX, newY);
+            target = step(directAngle);
         }
         var move = new Line2D.Double(droneLocation, target);
         for (var zone : noFlyZonesManager.getNoFlyZones()) {
@@ -91,7 +85,7 @@ public class Drone {
         var distanceToFurtherCorner = zoneCoordinates.stream().map(start::distance).max(Double::compare).orElse(0.0);
         Comparator<Double> deltaFromDirectAngle = Comparator.comparingDouble(s -> Math.abs(Utils.normaliseAngle(s - directAngleDegrees)));
         Predicate<Double> avoidsNoFlyZone = (angle) -> noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
-        Predicate<Double> avoidsOtherZones = (angle) -> noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, 0.0003));
+        Predicate<Double> avoidsOtherZones = (angle) -> noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, STEP_LENGTH));
         //noinspection OptionalGetWithoutIsPresent
         return legalAngles()
                 .filter(avoidsNoFlyZone).filter(avoidsOtherZones)
@@ -99,7 +93,7 @@ public class Drone {
     }
 
     private Stream<Double> legalAngles() {
-        return DoubleStream.iterate(0, x -> x + STEP_ANGLE).boxed();
+        return DoubleStream.iterate(0, x -> x + STEP_ANGLE).takeWhile(angle -> angle < 360).boxed();
     }
 
     private boolean takeReading(Sensor sensor) {
@@ -116,6 +110,12 @@ public class Drone {
         }
         var comparingOnDistanceFromDrone = Comparator.comparingDouble(this::distanceToSensor);
         return Optional.of(Collections.min(sensors, comparingOnDistanceFromDrone));
+    }
+
+    private Point2D step(double radians) {
+        var newX = droneLocation.getX() + STEP_LENGTH * Math.cos(radians);
+        var newY = droneLocation.getY() + STEP_LENGTH * Math.sin(radians);
+        return new Point2D.Double(newX, newY);
     }
 
     private double distanceToSensor(Sensor sensor) {

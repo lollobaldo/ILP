@@ -25,6 +25,10 @@ public class Sensor {
         this.visited = true;
     }
 
+    
+    /** 
+     * @return Feature
+     */
     public Feature toGeoJsonFeature() {
         var data = new DataPoint(reading.equals("null") ? 0 : Double.parseDouble(reading), battery <= 10, visited);
         var feature = Feature.fromGeometry(point2dToPoint(coordinates));
@@ -35,18 +39,34 @@ public class Sensor {
         return feature;
     }
 
+    
+    /** 
+     * @param coordinates
+     */
     public void setCoordinates(Point2D coordinates) {
         this.coordinates = coordinates;
     }
 
+    
+    /** 
+     * @return Point2D
+     */
     public Point2D getCoordinates() {
         return coordinates;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getLocation() {
         return location;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String toString() {
         return "Sensor{" +

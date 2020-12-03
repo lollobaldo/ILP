@@ -6,9 +6,9 @@
     <node x="185.9507575757574" y="0.0">uk.ac.ed.inf.aqmaps.Utils</node>
     <node x="384.5189393939392" y="346.0">uk.ac.ed.inf.aqmaps.DataPoint</node>
     <node x="900.3189393939392" y="940.5">uk.ac.ed.inf.aqmaps.Loader</node>
+    <node x="179.18825757575746" y="896.0">uk.ac.ed.inf.aqmaps.Drone</node>
     <node x="352.21723484848474" y="1197.0">uk.ac.ed.inf.aqmaps.App</node>
     <node x="0.0" y="638.0">uk.ac.ed.inf.aqmaps.NoFlyZonesManager</node>
-    <node x="179.18825757575746" y="896.0">uk.ac.ed.inf.aqmaps.Drone</node>
     <node x="666.3189393939392" y="649.0">uk.ac.ed.inf.aqmaps.FlightPlan</node>
     <node x="651.5189393939393" y="423.5">uk.ac.ed.inf.aqmaps.FlightPlan.FlightPlanComponent</node>
     <node x="70.16666666666663" y="379.0">uk.ac.ed.inf.aqmaps.NoFlyZone</node>
@@ -16,133 +16,17 @@
   </nodes>
   <notes />
   <edges>
-    <edge source="uk.ac.ed.inf.aqmaps.Drone" target="uk.ac.ed.inf.aqmaps.Utils">
-      <point x="-23.5" y="-115.5" />
-      <point x="343.68825757575746" y="876.0" />
-      <point x="302.35416666666663" y="876.0" />
-      <point x="302.35416666666663" y="326.0" />
-      <point x="283.75075757575735" y="326.0" />
-      <point x="-65.20000000000005" y="148.0" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.App" target="uk.ac.ed.inf.aqmaps.Drone">
-      <point x="-42.75" y="-38.0" />
-      <point x="423.46723484848474" y="1157.0" />
-      <point x="273.18825757575746" y="1157.0" />
-      <point x="-94.0" y="115.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.NoFlyZone" target="uk.ac.ed.inf.aqmaps.Utils">
-      <point x="0.0" y="-71.5" />
-      <point x="178.66666666666663" y="326.0" />
-      <point x="218.55075757575742" y="326.0" />
-      <point x="-130.39999999999998" y="148.0" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.Drone" target="uk.ac.ed.inf.aqmaps.FlightPlan">
-      <point x="117.5" y="-115.5" />
-      <point x="484.68825757575746" y="866.0" />
-      <point x="701.8189393939392" y="866.0" />
-      <point x="-71.0" y="71.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.Drone" target="uk.ac.ed.inf.aqmaps.Sensor">
-      <point x="23.5" y="-115.5" />
-      <point x="390.68825757575746" y="876.0" />
-      <point x="376.1439393939393" y="876.0" />
-      <point x="-68.0" y="115.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.Sensor" target="uk.ac.ed.inf.aqmaps.DataPoint">
-      <point x="-1.1368683772161603E-13" y="-115.5" />
-      <point x="444.1439393939392" y="580.0" />
-      <point x="446.2689393939392" y="580.0" />
-      <point x="-61.75" y="104.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.App" target="uk.ac.ed.inf.aqmaps.Sensor">
-      <point x="14.25" y="-38.0" />
-      <point x="480.46723484848474" y="1147.0" />
-      <point x="565.6882575757575" y="1147.0" />
-      <point x="565.6882575757575" y="856.0" />
-      <point x="512.1439393939393" y="856.0" />
-      <point x="67.99999999999989" y="115.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.FlightPlan" target="uk.ac.ed.inf.aqmaps.Utils">
-      <point x="85.20000000000005" y="-71.5" />
-      <point x="858.0189393939393" y="580.0" />
-      <point x="872.2689393939393" y="580.0" />
-      <point x="872.2689393939393" y="326.0" />
-      <point x="414.1507575757573" y="326.0" />
-      <point x="65.19999999999993" y="148.0" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.App" target="uk.ac.ed.inf.aqmaps.NoFlyZonesManager">
-      <point x="-99.75" y="-38.0" />
-      <point x="366.46723484848474" y="1177.0" />
-      <point x="61.5" y="1177.0" />
-      <point x="61.5" y="876.0" />
-      <point x="33.5" y="876.0" />
-      <point x="-100.5" y="82.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.Drone" target="uk.ac.ed.inf.aqmaps.NoFlyZone">
-      <point x="-70.5" y="-115.5" />
-      <point x="296.68825757575746" y="876.0" />
-      <point x="291.35416666666663" y="876.0" />
-      <point x="291.35416666666663" y="580.0" />
-      <point x="260.04166666666663" y="580.0" />
-      <point x="81.375" y="71.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.App" target="uk.ac.ed.inf.aqmaps.FlightPlan">
-      <point x="42.75" y="-38.0" />
-      <point x="508.96723484848474" y="1157.0" />
-      <point x="825.0848484848484" y="1157.0" />
-      <point x="825.0848484848484" y="876.0" />
-      <point x="843.8189393939392" y="876.0" />
-      <point x="71.0" y="71.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.App" target="uk.ac.ed.inf.aqmaps.Utils">
-      <point x="71.25" y="-38.0" />
-      <point x="537.4672348484847" y="1167.0" />
-      <point x="889.8189393939392" y="1167.0" />
-      <point x="889.8189393939392" y="316.0" />
-      <point x="479.35075757575737" y="316.0" />
-      <point x="130.39999999999998" y="148.0" />
-    </edge>
     <edge source="uk.ac.ed.inf.aqmaps.FlightPlan.FlightPlanComponent" target="uk.ac.ed.inf.aqmaps.FlightPlan">
       <point x="75.0" y="27.0" />
       <point x="826.5189393939393" y="580.0" />
       <point x="815.4189393939392" y="580.0" />
       <point x="42.60000000000002" y="-71.5" />
     </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.Drone" target="uk.ac.ed.inf.aqmaps.NoFlyZonesManager">
-      <point x="-164.5" y="-115.5" />
-      <point x="202.68825757575746" y="876.0" />
-      <point x="167.5" y="876.0" />
-      <point x="33.5" y="82.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.Sensor" target="uk.ac.ed.inf.aqmaps.Utils">
-      <point x="-68.00000000000011" y="-115.5" />
-      <point x="376.1439393939392" y="580.0" />
-      <point x="342.84223484848474" y="580.0" />
-      <point x="342.84223484848474" y="326.0" />
-      <point x="348.9507575757574" y="326.0" />
-      <point x="0.0" y="148.0" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.NoFlyZonesManager" target="uk.ac.ed.inf.aqmaps.NoFlyZone">
-      <point x="-89.33333333333331" y="-82.5" />
-      <point x="44.666666666666686" y="580.0" />
-      <point x="97.29166666666663" y="580.0" />
-      <point x="-81.375" y="71.5" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.App" target="uk.ac.ed.inf.aqmaps.Loader">
-      <point x="99.75" y="-38.0" />
-      <point x="565.9672348484847" y="1177.0" />
-      <point x="1031.8189393939392" y="1177.0" />
-      <point x="0.0" y="71.0" />
-    </edge>
-    <edge source="uk.ac.ed.inf.aqmaps.FlightPlan" target="uk.ac.ed.inf.aqmaps.FlightPlan.FlightPlanComponent">
-      <point x="-85.19999999999993" y="-71.5" />
-      <point x="687.6189393939393" y="580.0" />
-      <point x="676.5189393939393" y="580.0" />
-      <point x="-75.0" y="27.0" />
-    </edge>
   </edges>
   <settings layout="Hierarchic Group" zoom="0.3727764887857695" x="582.0" y="636.5" />
-  <SelectedNodes />
+  <SelectedNodes>
+    <node>uk.ac.ed.inf.aqmaps.Utils</node>
+  </SelectedNodes>
   <Categories>
     <Category>Constructors</Category>
     <Category>Methods</Category>
