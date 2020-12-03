@@ -52,13 +52,4 @@ public class NoFlyZone {
     public Polygon getPolygon() {
         return polygon;
     }
-
-    
-    /** 
-     * @return String
-     */
-    @Override
-    public String toString() {
-        return "NoFlyZone: " + name + '.';
-    }
 }

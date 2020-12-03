@@ -62,19 +62,4 @@ public class Sensor {
     public String getLocation() {
         return location;
     }
-
-    
-    /** 
-     * @return String
-     */
-    @Override
-    public String toString() {
-        return "Sensor{" +
-                "coordinates=" + coordinates +
-                ", location='" + location + '\'' +
-                ", battery=" + battery +
-                ", reading='" + reading + '\'' +
-                ", visited=" + visited +
-                '}';
-    }
 }

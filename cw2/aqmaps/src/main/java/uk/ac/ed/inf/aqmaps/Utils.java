@@ -26,18 +26,6 @@ public class Utils {
     public static Point point2dToPoint(Point2D p) {
         return Point.fromLngLat(p.getX(), p.getY());
     }
-
-    
-    /** 
-     * @param points
-     * @return List<Point>
-     */
-    public static List<Point> points2dToPoints(Collection<Point2D> points) {
-        return points.stream()
-                .map(Utils::point2dToPoint)
-                .collect(Collectors.toList());
-    }
-
     
     /** 
      * @param points
@@ -48,7 +36,6 @@ public class Utils {
                 .map(Utils::pointToPoint2d)
                 .collect(Collectors.toList());
     }
-
     
     /** 
      * @param start

@@ -1,6 +1,5 @@
 package uk.ac.ed.inf.aqmaps;
 
-import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
@@ -47,23 +46,6 @@ public class NoFlyZonesManager {
         }
         return true;
     }
-
-    
-    /** 
-     * @return List<Feature>
-     */
-    public List<Feature> toGeoJsonFeatures() {
-        var features = new ArrayList<Feature>();
-        for (var zone : zones) {
-            System.out.println(zone);
-            Polygon polygon = zone.getPolygon();
-            Feature feature = Feature.fromGeometry(polygon);
-            feature.addStringProperty("fill", "#ff0000");
-            features.add(feature);
-        }
-        return features;
-    }
-
     
     /** 
      * @return Collection<NoFlyZone>

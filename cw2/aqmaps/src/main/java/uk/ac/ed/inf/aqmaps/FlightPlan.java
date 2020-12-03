@@ -27,7 +27,6 @@ public class FlightPlan {
         inProgress.angle = (int) Math.round(Utils.degreesBetween(inProgress.start, inProgress.end));
         assert(inProgress.angle % 10 == 0);
         flightPlan.add(inProgress);
-//        flightPlan.add(point);
     }
 
     
