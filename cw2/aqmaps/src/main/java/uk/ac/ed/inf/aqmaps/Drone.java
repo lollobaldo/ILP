@@ -40,7 +40,6 @@ public class Drone {
      * @param sensors The Set of sensors to be visited
      */
     public Drone(Point2D startingPoint, NoFlyZonesManager noFlyZonesManager, Set<Sensor> sensors) {
-        System.out.println(sensors.size());
         // Validate input and initialise attributes
         this.startingPoint = Objects.requireNonNull(startingPoint);
         this.noFlyZonesManager = Objects.requireNonNull(noFlyZonesManager);
@@ -70,8 +69,6 @@ public class Drone {
             // If there's a sensor to visit, try to go there.
             // Else go back to starting point
             if (closestSensor.isPresent()) {
-                System.out.print("Going to ");
-                System.out.println(closestSensor.get().getLocation());
                 targetDestination = closestSensor.get().getCoordinates();
             } else {
                 targetDestination = startingPoint;
@@ -93,7 +90,6 @@ public class Drone {
             }
             movesLeft -= 1;
         }
-        System.out.println(movesLeft);
         return flightPlan;
     }
 
@@ -136,8 +132,6 @@ public class Drone {
             if (!zone.isLegalMove(move)) {
                 // If the move hits a NoFlyZone, then get a fly-around angle.
                 var opt = getBestFlyAroundAngle(droneLocation, targetDestination, zone);
-                System.out.print("chosen ");
-                System.out.println(opt);
                 return opt;
             }
         }
@@ -171,7 +165,9 @@ public class Drone {
         Comparator<Double> deltaFromDirectAngle = Comparator.comparingDouble(angle -> Utils.angleDifference(angle, directAngleDegrees));
 
         // Verify it circumnavigates the noFlyZone, and that it does not hit any other while doing it
-        Predicate<Double> avoidsNoFlyZone = (angle) -> noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
+        Predicate<Double> avoidsNoFlyZone = (angle) ->
+                noFlyZone == NoFlyZonesManager.getConfinementArea()
+                        || noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
         Predicate<Double> avoidsOtherZones = (angle) -> (noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, STEP_LENGTH)));
 
         // Out of all the legal angles, keep those which do not intersect with the NFZ,
@@ -204,7 +200,6 @@ public class Drone {
     private boolean takeReading(Sensor sensor) {
         if (distanceToSensor(sensor) < SENSOR_RANGE) {
             sensor.visit();
-            System.out.println(sensor.getLocation());
             return true;
         }
         return false;
