@@ -117,7 +117,7 @@ public class Drone {
      * @see #getBestFlyAroundAngle
      */
     public double getBestAngleTo(Point2D targetDestination) {
-        // This is the straght-line angle to the target destination
+        // This is the straight-line angle to the target destination
         var directAngle = Utils.radiansBetween(droneLocation, targetDestination);
 
         // If the target destination is too close, generate an alternative target

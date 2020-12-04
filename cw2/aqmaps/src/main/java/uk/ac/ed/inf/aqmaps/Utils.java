@@ -61,7 +61,7 @@ public class Utils {
      * @return double The angle in radians between the points
      */
     public static double radiansBetween(Point2D point1, Point2D point2) {
-        // Apply trigonometrics to get the angle
+        // Apply trigonometry to get the angle
         var tan = Math.atan2(point2.getY() - point1.getY(), point2.getX() - point1.getX());
         return tan >= 0 ? tan : tan + 2*Math.PI;
     }
@@ -90,7 +90,7 @@ public class Utils {
      * @return Line2D The Line2D object satisfying the requirements
      */
     public static Line2D getLine(Point2D start, double degrees, double length) {
-        // Apply trigonometrics to generate the end point, and create a line with it
+        // Apply trigonometry to generate the end point, and create a line with it
         var endX = start.getX() + length * Math.cos(Math.toRadians(degrees));
         var endY = start.getY() + length * Math.sin(Math.toRadians(degrees));
         return new Line2D.Double(start, new Point2D.Double(endX, endY));

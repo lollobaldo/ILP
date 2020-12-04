@@ -31,7 +31,7 @@ public class FlightPlan {
 
     /**
      * Add a destination Point to a flight plan.
-     * Generates the angle based on the destinaion.
+     * Generates the angle based on the destination.
      *
      * @param point The point to add
      */
@@ -101,7 +101,7 @@ public class FlightPlan {
 
     /**
      * This is a helper class for the FlightPlanComponent.
-     * It represents one single entry of a FlightPlan. It has all the informations
+     * It represents one single entry of a FlightPlan. It has all the information
      * needed to fill a flightpath file as required by coursework specification.
      */
     private static class FlightPlanComponent {
