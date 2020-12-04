@@ -29,6 +29,16 @@ public class App {
         return "readings-" + day + "-" + month + "-" + year + ".geojson";
     }
 
+    /** Constant confinement area */
+    private static final Point TOP_LEFT = Point.fromLngLat(-3.192473, 55.946233);
+    private static final Point TOP_RIGHT = Point.fromLngLat(-3.184319, 55.946233);
+    private static final Point BOTTOM_LEFT = Point.fromLngLat(-3.192473, 55.942617);
+    private static final Point BOTTOM_RIGHT = Point.fromLngLat(-3.184319, 55.942617);
+    /** Last point must be repeated, {@see Polygon} */
+    private static final Polygon confinementArea = Polygon.fromLngLats(Collections.singletonList(Arrays.asList(
+            TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT, TOP_LEFT
+    )));
+
 
     /**
      * Generates an appropriate flightpath filename for a given date

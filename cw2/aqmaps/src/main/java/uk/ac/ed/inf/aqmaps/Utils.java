@@ -112,6 +112,20 @@ public class Utils {
 
 
     /**
+     * Method to find the difference of two angles.
+     * The result is guaranteed to be in the range [0, 180)
+     *
+     * @param angle1 The first angle
+     * @param angle1 The second angle
+     * @return double The normalised difference
+     */
+    public static double angleDifference(double angle1, double angle2) {
+        var diff = Math.abs(angle1 - angle2);
+        return diff > 180 ? 360 - diff : diff;
+    }
+
+
+    /**
      * Method to round a number to a multiple of 10
      *
      * @param degrees The number to round

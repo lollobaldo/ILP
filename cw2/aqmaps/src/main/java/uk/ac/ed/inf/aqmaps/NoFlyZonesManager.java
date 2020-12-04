@@ -21,9 +21,9 @@ public class NoFlyZonesManager {
     private static final Point BOTTOM_LEFT = Point.fromLngLat(-3.192473, 55.942617);
     private static final Point BOTTOM_RIGHT = Point.fromLngLat(-3.184319, 55.942617);
     /** Last point must be repeated, {@see Polygon} */
-    private static final Polygon confinementArea = Polygon.fromLngLats(Collections.singletonList(Arrays.asList(
+    private static final NoFlyZone confinementArea = new NoFlyZone(Polygon.fromLngLats(Collections.singletonList(Arrays.asList(
             TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT, TOP_LEFT
-    )));
+    ))));
 
     /** The set of NoFlyZones for this specific instance */
     private final Set<NoFlyZone> zones;
@@ -38,7 +38,7 @@ public class NoFlyZonesManager {
         // Validate inputs and add the confinement area
         Objects.requireNonNull(geoJson);
         zones = new HashSet<>();
-        zones.add(new NoFlyZone(confinementArea));
+        zones.add(confinementArea);
 
         // Extract polygons, construct a NoFlyZone for each and add to the set
         var zonesFeatures = FeatureCollection.fromJson(geoJson).features();
@@ -69,6 +69,15 @@ public class NoFlyZonesManager {
             }
         }
         return true;
+    }
+
+    /**
+     * Get the confinement area of the map
+     *
+     * @return NoFlyZone The confinement area
+     */
+    public static NoFlyZone getConfinementArea() {
+        return confinementArea;
     }
 
 

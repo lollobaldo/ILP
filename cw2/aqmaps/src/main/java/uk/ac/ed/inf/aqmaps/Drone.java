@@ -40,6 +40,7 @@ public class Drone {
      * @param sensors The Set of sensors to be visited
      */
     public Drone(Point2D startingPoint, NoFlyZonesManager noFlyZonesManager, Set<Sensor> sensors) {
+        System.out.println(sensors.size());
         // Validate input and initialise attributes
         this.startingPoint = Objects.requireNonNull(startingPoint);
         this.noFlyZonesManager = Objects.requireNonNull(noFlyZonesManager);
@@ -69,6 +70,8 @@ public class Drone {
             // If there's a sensor to visit, try to go there.
             // Else go back to starting point
             if (closestSensor.isPresent()) {
+                System.out.print("Going to ");
+                System.out.println(closestSensor.get().getLocation());
                 targetDestination = closestSensor.get().getCoordinates();
             } else {
                 targetDestination = startingPoint;
@@ -90,6 +93,7 @@ public class Drone {
             }
             movesLeft -= 1;
         }
+        System.out.println(movesLeft);
         return flightPlan;
     }
 
@@ -131,7 +135,10 @@ public class Drone {
         for (var zone : noFlyZonesManager.getNoFlyZones()) {
             if (!zone.isLegalMove(move)) {
                 // If the move hits a NoFlyZone, then get a fly-around angle.
-                return getBestFlyAroundAngle(droneLocation, targetDestination, zone);
+                var opt = getBestFlyAroundAngle(droneLocation, targetDestination, zone);
+                System.out.print("chosen ");
+                System.out.println(opt);
+                return opt;
             }
         }
 
@@ -139,12 +146,12 @@ public class Drone {
         return Utils.round10(Math.toDegrees(directAngle));
     }
 
-    
+
     /**
      * Get the best <b>legal</b> angle to <b>fully</b> fly around a given no fly zone.
      * It returns the closest angle to a straight-line path, that never intersects the no-fly zone.
      * This assures the least number of steps are needed to fly around it.
-     * 
+     *
      * @param start The starting point
      * @param targetDestination The target destination
      * @param noFlyZone The NoFlyZone to circumvent
@@ -160,10 +167,13 @@ public class Drone {
         var distanceToFurtherCorner = zoneCoordinates.stream().map(start::distance).max(Double::compare).orElse(0.0);
 
         // Define predicates to avoid the noFlyZone
-        Comparator<Double> deltaFromDirectAngle = Comparator.comparingDouble(s -> Math.abs(Utils.normaliseAngle(s - directAngleDegrees)));
+        // Compare angles based on how close they are to the straight-line
+        Comparator<Double> deltaFromDirectAngle = Comparator.comparingDouble(angle -> Utils.angleDifference(angle, directAngleDegrees));
+
+        // Verify it circumnavigates the noFlyZone, and that it does not hit any other while doing it
         Predicate<Double> avoidsNoFlyZone = (angle) -> noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
-        Predicate<Double> avoidsOtherZones = (angle) -> noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, STEP_LENGTH));
-        
+        Predicate<Double> avoidsOtherZones = (angle) -> (noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, STEP_LENGTH)));
+
         // Out of all the legal angles, keep those which do not intersect with the NFZ,
         // then get the closest one to the straight-line angle.
         //noinspection OptionalGetWithoutIsPresent
@@ -179,7 +189,7 @@ public class Drone {
      *
      * @return Stream<Double> The stream of legal angles
      */
-    private Stream<Double> legalAngles() {
+    private static Stream<Double> legalAngles() {
         return DoubleStream.iterate(0, angle -> angle < 360, x -> x + STEP_ANGLE).boxed();
     }
 
@@ -194,6 +204,7 @@ public class Drone {
     private boolean takeReading(Sensor sensor) {
         if (distanceToSensor(sensor) < SENSOR_RANGE) {
             sensor.visit();
+            System.out.println(sensor.getLocation());
             return true;
         }
         return false;
@@ -218,6 +229,7 @@ public class Drone {
 
     /**
      * Make one step of STEP_LENGTH in the specified direction
+     *
      * @param radians The angle for the direction
      * @return Point2D The resulting position
      */
