@@ -84,7 +84,7 @@ public class NoFlyZonesManager {
     /**
      * Get the NoFlyZones in the map
      *
-     * @return Set<NoFlyZone> The collection of NoFlyZones
+     * @return <code>Set&lt;NoFlyZone></code> The collection of NoFlyZones
      */
     public Set<NoFlyZone> getNoFlyZones() {
         return zones;

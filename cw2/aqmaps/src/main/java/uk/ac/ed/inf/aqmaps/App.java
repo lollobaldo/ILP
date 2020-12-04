@@ -34,7 +34,7 @@ public class App {
     private static final Point TOP_RIGHT = Point.fromLngLat(-3.184319, 55.946233);
     private static final Point BOTTOM_LEFT = Point.fromLngLat(-3.192473, 55.942617);
     private static final Point BOTTOM_RIGHT = Point.fromLngLat(-3.184319, 55.942617);
-    /** Last point must be repeated, {@see Polygon} */
+    /** Last point must be repeated, {@link Polygon} */
     private static final Polygon confinementArea = Polygon.fromLngLats(Collections.singletonList(Arrays.asList(
             TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT, TOP_LEFT
     )));
@@ -61,7 +61,7 @@ public class App {
      * If the year is "0000", then all output files required for the submission
      * are generated (12 dates x 2 files)
      *
-     * @param args
+     * @param args The command line arguments for the application
      */
     public static void main(String[] args) {
         // Check that all arguments are provided

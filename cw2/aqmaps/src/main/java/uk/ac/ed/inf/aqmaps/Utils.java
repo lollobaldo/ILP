@@ -116,7 +116,7 @@ public class Utils {
      * The result is guaranteed to be in the range [0, 180)
      *
      * @param angle1 The first angle
-     * @param angle1 The second angle
+     * @param angle2 The second angle
      * @return double The normalised difference
      */
     public static double angleDifference(double angle1, double angle2) {

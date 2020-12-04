@@ -112,7 +112,7 @@ public class Drone {
      * NoFlyZone in the path, or if the angle is not legal for the drone to fly.
      *
      * @param targetDestination The target destination
-     * @return double The optimal <b>legal<b> angle to fly to the destination.
+     * @return double The optimal <b>legal</b> angle to fly to the destination.
      * @see #legalAngles
      * @see #getBestFlyAroundAngle
      */
@@ -183,7 +183,7 @@ public class Drone {
      * Generate a stream of all legal angles for the drone to fly
      * This is generalised on the STEP_ANGLE, in this case it returns all multiples of 10 up to 360
      *
-     * @return Stream<Double> The stream of legal angles
+     * @return <code>Stream&lt;Double></code> The stream of legal angles
      */
     private static Stream<Double> legalAngles() {
         return DoubleStream.iterate(0, angle -> angle < 360, x -> x + STEP_ANGLE).boxed();
@@ -209,7 +209,7 @@ public class Drone {
     /**
      * Get the closest sensor to the drone.
      *
-     * @return Optional<Sensor> The closest sensor. Empty if no sensor is present
+     * @return <code>Optional&lt;Sensor></code> The closest sensor. Empty if no sensor is present
      */
     private Optional<Sensor> closestSensor() {
         // If no sensor is present, return an empty container
