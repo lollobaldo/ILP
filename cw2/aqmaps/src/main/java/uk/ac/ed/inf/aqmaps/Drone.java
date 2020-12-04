@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 /**
  * This class represents the Drone.
  * It is a stateful drone, aiming to visit all sensors provided, with the
- * restrictions imposed by the {@link noFlyZonesManager}.
+ * restrictions imposed by the {@link NoFlyZonesManager}.
  */
 public class Drone {
     /** Given parameters for the drone */
@@ -80,6 +80,7 @@ public class Drone {
 
             // Read sensor if possible, and add to flight plan.
             if (closestSensor.isPresent() && takeReading(closestSensor.get())) {
+                sensors.remove(closestSensor.get());
                 flightPlan.read(closestSensor.get().getLocation());
             }
 
@@ -122,11 +123,11 @@ public class Drone {
         // If the target destination is too close, generate an alternative target
         // in the same direction
         if (droneLocation.distance(targetDestination) < STEP_LENGTH) {
-            target = step(directAngle);
+            targetDestination = step(directAngle);
         }
 
         // Generate a naive move (possibly illegal angle), then validate it.
-        var move = new Line2D.Double(droneLocation, target);
+        var move = new Line2D.Double(droneLocation, targetDestination);
         for (var zone : noFlyZonesManager.getNoFlyZones()) {
             if (!zone.isLegalMove(move)) {
                 // If the move hits a NoFlyZone, then get a fly-around angle.
@@ -150,56 +151,74 @@ public class Drone {
      * @return double
      */
     public double getBestFlyAroundAngle(Point2D start, Point2D targetDestination, NoFlyZone noFlyZone) {
+        // Get the straight-line angle as optimal value
         var directAngle = Utils.radiansBetween(start, targetDestination);
         var directAngleDegrees = Math.toDegrees(directAngle);
+
+        // Get the corners of the zone, and find the furthest one
         var zoneCoordinates = noFlyZone.getCoordinates();
         var distanceToFurtherCorner = zoneCoordinates.stream().map(start::distance).max(Double::compare).orElse(0.0);
+
+        // Define predicates to avoid the noFlyZone
         Comparator<Double> deltaFromDirectAngle = Comparator.comparingDouble(s -> Math.abs(Utils.normaliseAngle(s - directAngleDegrees)));
         Predicate<Double> avoidsNoFlyZone = (angle) -> noFlyZone.isLegalMove(Utils.getLine(start, angle, distanceToFurtherCorner));
         Predicate<Double> avoidsOtherZones = (angle) -> noFlyZonesManager.isLegalMove(Utils.getLine(start, angle, STEP_LENGTH));
+        
+        // Out of all the legal angles, keep those which do not intersect with the NFZ,
+        // then get the closest one to the straight-line angle.
         //noinspection OptionalGetWithoutIsPresent
         return legalAngles()
                 .filter(avoidsNoFlyZone).filter(avoidsOtherZones)
                 .min(deltaFromDirectAngle).get();
     }
 
-    
-    /** 
-     * @return Stream<Double>
+
+    /**
+     * Generate a stream of all legal angles for the drone to fly
+     * This is generalised on the STEP_ANGLE, in this case it returns all multiples of 10 up to 360
+     *
+     * @return Stream<Double> The stream of legal angles
      */
     private Stream<Double> legalAngles() {
         return DoubleStream.iterate(0, angle -> angle < 360, x -> x + STEP_ANGLE).boxed();
     }
 
-    
-    /** 
-     * @param sensor
-     * @return boolean
+
+    /**
+     * Tries to take a reading of a sensor. Returns whether the sensor was in range
+     * and the reading was performed correctly.
+     *
+     * @param sensor The sensor to read
+     * @return boolean Whether the sensor was read appropriately (i.e: within range)
      */
     private boolean takeReading(Sensor sensor) {
         if (distanceToSensor(sensor) < SENSOR_RANGE) {
             sensor.visit();
-            return sensors.remove(sensor);
         }
         return false;
     }
 
-    
-    /** 
-     * @return Optional<Sensor>
+
+    /**
+     * Get the closest sensor to the drone.
+     *
+     * @return Optional<Sensor> The closest sensor. Empty if no sensor is present
      */
     private Optional<Sensor> closestSensor() {
+        // If no sensor is present, return an empty container
         if (sensors.size() == 0) {
             return Optional.empty();
         }
+        // Else find the closest one by comparing the distance and taking the minimum.
         var comparingOnDistanceFromDrone = Comparator.comparingDouble(this::distanceToSensor);
         return Optional.of(Collections.min(sensors, comparingOnDistanceFromDrone));
     }
 
-    
-    /** 
-     * @param radians
-     * @return Point2D
+
+    /**
+     * Make one step of STEP_LENGTH in the specified direction
+     * @param radians The angle for the direction
+     * @return Point2D The resulting position
      */
     private Point2D step(double radians) {
         var newX = droneLocation.getX() + STEP_LENGTH * Math.cos(radians);
@@ -207,10 +226,12 @@ public class Drone {
         return new Point2D.Double(newX, newY);
     }
 
-    
-    /** 
-     * @param sensor
-     * @return double
+
+    /**
+     * Find the distance to a sensor
+     *
+     * @param sensor The sensor to find the distance to
+     * @return double The distance to the sensor
      */
     private double distanceToSensor(Sensor sensor) {
         return droneLocation.distance(sensor.getCoordinates());

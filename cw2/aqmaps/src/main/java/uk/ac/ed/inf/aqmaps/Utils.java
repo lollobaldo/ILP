@@ -8,82 +8,114 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * This class contains a collection of utility functions.
+ * They mostly manage conversions between data types used in the application
+ */
 public class Utils {
-    
-    /** 
-     * @param p
-     * @return Point2D
+
+    /**
+     * Convert a {@link Point} to a {@link Point2D}
+     *
+     * @param point The Point to convert
+     * @return Point2D The equivalent Point2D
      */
-    public static Point2D pointToPoint2d(Point p) {
-        return new Point2D.Double(p.longitude(), p.latitude());
+    public static Point2D pointToPoint2d(Point point) {
+        return new Point2D.Double(point.longitude(), point.latitude());
     }
 
-    
-    /** 
-     * @param p
-     * @return Point
+
+    /**
+     * Convert a {@link Point2D} to a {@link Point}
+     *
+     * @param point2d The Point2D to convert
+     * @return Point The equivalent Point
      */
-    public static Point point2dToPoint(Point2D p) {
-        return Point.fromLngLat(p.getX(), p.getY());
+    public static Point point2dToPoint(Point2D point2d) {
+        return Point.fromLngLat(point2d.getX(), point2d.getY());
     }
-    
-    /** 
-     * @param points
-     * @return List<Point2D>
+
+
+    /**
+     * Convert a Collection of {@link Point2D} to a List of {@link Point}
+     *
+     * @param points The Collection of Point to convert
+     * @return List<Point2D> The equivalent List of Point2D
+     * @see pointToPoint2d
      */
     public static List<Point2D> pointsToPoints2d(Collection<Point> points) {
+        // Convert the Collection to a stream, then convert each item individually
+        // and return a list containing them.
         return points.stream()
                 .map(Utils::pointToPoint2d)
                 .collect(Collectors.toList());
     }
 
-    /** 
-     * @param start
-     * @param end
-     * @return double
+
+    /**
+     * Method to get the angle in <b>radians</b> between two Point2D points
+     *
+     * @param point1 The first point
+     * @param point2 The second point
+     * @return double The angle in radians between the points
      */
-    public static double radiansBetween(Point2D start, Point2D end) {
-        var tan = Math.atan2(end.getY() - start.getY(), end.getX() - start.getX());
+    public static double radiansBetween(Point2D point1, Point2D point2) {
+        // Apply trigonometrics to get the angle
+        var tan = Math.atan2(point2.getY() - point1.getY(), point2.getX() - point1.getX());
         return tan >= 0 ? tan : tan + 2*Math.PI;
     }
 
-    
-    /** 
-     * @param start
-     * @param end
-     * @return double
+
+    /**
+     * Method to get the angle in <b>degrees</b> between two Point2D points
+     *
+     * @param point1 The first point
+     * @param point2 The second point
+     * @return double The angle in radians between the points
      */
-    public static double degreesBetween(Point2D start, Point2D end){
-        return Math.toDegrees(radiansBetween(start, end));
+    public static double degreesBetween(Point2D point1, Point2D point2){
+        // Calculate angle and convert to degrees
+        return Math.toDegrees(radiansBetween(point1, point2));
     }
 
-    
-    /** 
-     * @param start
-     * @param angle
-     * @param length
-     * @return Line2D
+
+    /**
+     * Method to calculate a Line2D starting from a point, with a given angle and length
+     * The angle is represented in degrees.
+     *
+     * @param start The starting point of the line
+     * @param degrees The angle in <b>degrees</b> of the line with the X-axis
+     * @param length The length of the line
+     * @return Line2D The Line2D object satisfying the requirements
      */
-    public static Line2D getLine(Point2D start, double angle, double length) {
-        var endX = start.getX() + length * Math.cos(Math.toRadians(angle));
-        var endY = start.getY() + length * Math.sin(Math.toRadians(angle));
+    public static Line2D getLine(Point2D start, double degrees, double length) {
+        // Apply trigonometrics to generate the end point, and create a line with it
+        var endX = start.getX() + length * Math.cos(Math.toRadians(degrees));
+        var endY = start.getY() + length * Math.sin(Math.toRadians(degrees));
         return new Line2D.Double(start, new Point2D.Double(endX, endY));
     }
 
-    
-    /** 
-     * @param degrees
-     * @return double
+
+    /**
+     * Method to normalise an angle in degrees.
+     * The angle returned is equivalent to the starting one,
+     * and guaranteed to be in the range [0, 360)
+     *
+     * @param degrees The angle in degrees
+     * @return double The normalised representation of the angle
      */
     public static double normaliseAngle(double degrees) {
         var mod = degrees % 360;
         return mod >= 0 ? mod : mod + 360;
     }
 
-    
-    /** 
-     * @param degrees
-     * @return int
+
+    /**
+     * Method to round a number to a multiple of 10
+     *
+     * @param degrees The number to round
+     * @return int The rounded number
      */
     public static int round10(double degrees) {
         return (int) Math.round(degrees/10.0) * 10;
