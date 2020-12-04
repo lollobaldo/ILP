@@ -1,6 +1,7 @@
 package uk.ac.ed.inf.aqmaps;
 
 import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
 
 import java.awt.geom.Point2D;
 import java.util.*;
@@ -76,8 +77,10 @@ public class FlightPlan {
         var points = flightPlan.stream()
                 .map(FlightPlanComponent::getEnd)
                 .map(Utils::point2dToPoint);
-        var line = Stream.concat(Stream.of(startingPoint), points).collect(Collectors.toList());
-        return LineString.fromLngLats(points);
+        // Add the starting point, and generate a LineString
+        var line = Stream.concat(Stream.of(Utils.point2dToPoint(startingPoint)), points)
+                .collect(Collectors.toList());
+        return LineString.fromLngLats(line);
     }
 
 

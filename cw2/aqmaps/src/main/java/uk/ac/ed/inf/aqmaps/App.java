@@ -26,7 +26,7 @@ public class App {
      * @return String The filename for a readings file
      */
     private static final String readingsFile(String day, String month, String year) {
-        return "readings-" + day + "-" + month + "-" + year + ".txt";
+        return "readings-" + day + "-" + month + "-" + year + ".geojson";
     }
 
 

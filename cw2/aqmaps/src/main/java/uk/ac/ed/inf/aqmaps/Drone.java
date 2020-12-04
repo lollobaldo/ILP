@@ -194,6 +194,7 @@ public class Drone {
     private boolean takeReading(Sensor sensor) {
         if (distanceToSensor(sensor) < SENSOR_RANGE) {
             sensor.visit();
+            return true;
         }
         return false;
     }
