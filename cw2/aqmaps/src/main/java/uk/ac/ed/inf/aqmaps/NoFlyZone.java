@@ -55,7 +55,7 @@ public class NoFlyZone {
     /**
      * Get coordinates
      *
-     * @return <code>List&lt;Point2D></code> The list of vertices of the Zone
+     * @return <code>List&lt;Point2D&gt;</code> The list of vertices of the Zone
      */
     public List<Point2D> getCoordinates() {
         return coordinates;

@@ -10,38 +10,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a3b6bd21-127f-467f-8cd3-b47ad751377e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../ilp-report/bib.bib" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/Drone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/Drone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/FlightPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/FlightPlan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/Loader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/Loader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/NoFlyZone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/NoFlyZone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/NoFlyZonesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/NoFlyZonesManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/aqmaps/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-report/ilp-report.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-report/ilp-report.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-01-01-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-01-01-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-02-02-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-02-02-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-03-03-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-03-03-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-04-04-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-04-04-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-05-05-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-05-05-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-06-06-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-06-06-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-07-07-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-07-07-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-08-08-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-08-08-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-09-09-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-09-09-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-10-10-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-10-10-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-11-11-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-11-11-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/flightpath-12-12-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/flightpath-12-12-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-01-01-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-01-01-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-02-02-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-02-02-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-03-03-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-03-03-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-04-04-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-04-04-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-05-05-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-05-05-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-06-06-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-06-06-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-07-07-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-07-07-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-08-08-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-08-08-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-09-09-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-09-09-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-10-10-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-10-10-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-11-11-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-11-11-2020.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ilp-results/readings-12-12-2020.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ilp-results/readings-12-12-2020.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +62,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="uk.ac.ed.inf.aqmaps.App" />
       <module name="aqmaps" />
-      <option name="PROGRAM_PARAMETERS" value="01 01 0000 55.9444 -3.1878 5678 8080" />
+      <option name="PROGRAM_PARAMETERS" value="01 01 2020 55.9444 -3.1878 5678 8080" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -133,7 +109,8 @@
       <workItem from="1606929532271" duration="12738000" />
       <workItem from="1607011043483" duration="10237000" />
       <workItem from="1607080119709" duration="9992000" />
-      <workItem from="1607111735999" duration="496000" />
+      <workItem from="1607111735999" duration="1310000" />
+      <workItem from="1607168554437" duration="10258000" />
     </task>
     <servers />
   </component>

@@ -41,8 +41,8 @@ public class Utils {
      * Convert a Collection of {@link Point2D} to a List of {@link Point}
      *
      * @param points The Collection of Point to convert
-     * @return List<Point2D> The equivalent List of Point2D
-     * @see pointToPoint2d
+     * @return <code>List&lt;Point2D&gt;</code> The equivalent List of Point2D
+     * @see #pointToPoint2d
      */
     public static List<Point2D> pointsToPoints2d(Collection<Point> points) {
         // Convert the Collection to a stream, then convert each item individually

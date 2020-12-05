@@ -4,13 +4,16 @@ import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.mapbox.geojson.*;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
 
 
 /**
@@ -28,16 +31,6 @@ public class App {
     private static final String readingsFile(String day, String month, String year) {
         return "readings-" + day + "-" + month + "-" + year + ".geojson";
     }
-
-    /** Constant confinement area */
-    private static final Point TOP_LEFT = Point.fromLngLat(-3.192473, 55.946233);
-    private static final Point TOP_RIGHT = Point.fromLngLat(-3.184319, 55.946233);
-    private static final Point BOTTOM_LEFT = Point.fromLngLat(-3.192473, 55.942617);
-    private static final Point BOTTOM_RIGHT = Point.fromLngLat(-3.184319, 55.942617);
-    /** Last point must be repeated, {@link Polygon} */
-    private static final Polygon confinementArea = Polygon.fromLngLats(Collections.singletonList(Arrays.asList(
-            TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT, TOP_LEFT
-    )));
 
 
     /**
@@ -165,7 +158,7 @@ public class App {
      * @param day The day (2 characters)
      * @param month The month (2 characters)
      * @param year The year (4 characters)
-     * @return Set<Sensor> The Set of sensors to visit on that day
+     * @return <code>Set&lt;Sensor&gt;</code> The Set of sensors to visit on that day
      * @throws IOException If an IO error occurs when loading the data
      * @throws InterruptedException If the network operation is interrupted
      */

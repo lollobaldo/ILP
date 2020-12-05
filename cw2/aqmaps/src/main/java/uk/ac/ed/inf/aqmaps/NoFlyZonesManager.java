@@ -20,7 +20,7 @@ public class NoFlyZonesManager {
     private static final Point TOP_RIGHT = Point.fromLngLat(-3.184319, 55.946233);
     private static final Point BOTTOM_LEFT = Point.fromLngLat(-3.192473, 55.942617);
     private static final Point BOTTOM_RIGHT = Point.fromLngLat(-3.184319, 55.942617);
-    /** Last point must be repeated, {@see Polygon} */
+    /** Last point must be repeated, see {@link Polygon} */
     private static final NoFlyZone confinementArea = new NoFlyZone(Polygon.fromLngLats(Collections.singletonList(Arrays.asList(
             TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT, TOP_LEFT
     ))));
@@ -59,7 +59,7 @@ public class NoFlyZonesManager {
      *
      * @param move The move to be checked
      * @return boolean Whether the move intersect the NoFlyZone
-     * @see {NoFlyZone#isLegalMove}
+     * @see NoFlyZone#isLegalMove
      */
     public boolean isLegalMove(Line2D move) {
         // For every zone in the map, call their isLegalMove.
@@ -84,7 +84,7 @@ public class NoFlyZonesManager {
     /**
      * Get the NoFlyZones in the map
      *
-     * @return <code>Set&lt;NoFlyZone></code> The collection of NoFlyZones
+     * @return <code>Set&lt;NoFlyZone&gt;</code> The collection of NoFlyZones
      */
     public Set<NoFlyZone> getNoFlyZones() {
         return zones;

@@ -23,7 +23,7 @@ public class Loader {
     /** The HttpClient used to make the network requests */
     private static final HttpClient client = HttpClient.newHttpClient();
 
-    /** The server for the request. {@see #setServer} */
+    /** The server for the request. {@link #setServer} */
     private static String server;
 
 

@@ -116,7 +116,7 @@ public class Drone {
      * @see #legalAngles
      * @see #getBestFlyAroundAngle
      */
-    public double getBestAngleTo(Point2D targetDestination) {
+    private double getBestAngleTo(Point2D targetDestination) {
         // This is the straight-line angle to the target destination
         var directAngle = Utils.radiansBetween(droneLocation, targetDestination);
 
@@ -128,8 +128,10 @@ public class Drone {
 
         // Generate a naive move (possibly illegal angle), then validate it.
         var move = new Line2D.Double(droneLocation, targetDestination);
+        var validAngle = Math.toRadians(Utils.round10(Math.toDegrees(directAngle)));
+        var validMove = new Line2D.Double(droneLocation, step(validAngle));
         for (var zone : noFlyZonesManager.getNoFlyZones()) {
-            if (!zone.isLegalMove(move)) {
+            if (!zone.isLegalMove(move) || !zone.isLegalMove(validMove)) {
                 // If the move hits a NoFlyZone, then get a fly-around angle.
                 var opt = getBestFlyAroundAngle(droneLocation, targetDestination, zone);
                 return opt;
@@ -151,7 +153,7 @@ public class Drone {
      * @param noFlyZone The NoFlyZone to circumvent
      * @return double
      */
-    public double getBestFlyAroundAngle(Point2D start, Point2D targetDestination, NoFlyZone noFlyZone) {
+    private double getBestFlyAroundAngle(Point2D start, Point2D targetDestination, NoFlyZone noFlyZone) {
         // Get the straight-line angle as optimal value
         var directAngle = Utils.radiansBetween(start, targetDestination);
         var directAngleDegrees = Math.toDegrees(directAngle);
@@ -183,7 +185,7 @@ public class Drone {
      * Generate a stream of all legal angles for the drone to fly
      * This is generalised on the STEP_ANGLE, in this case it returns all multiples of 10 up to 360
      *
-     * @return <code>Stream&lt;Double></code> The stream of legal angles
+     * @return <code>Stream&lt;Double&gt;</code> The stream of legal angles
      */
     private static Stream<Double> legalAngles() {
         return DoubleStream.iterate(0, angle -> angle < 360, x -> x + STEP_ANGLE).boxed();
@@ -209,7 +211,7 @@ public class Drone {
     /**
      * Get the closest sensor to the drone.
      *
-     * @return <code>Optional&lt;Sensor></code> The closest sensor. Empty if no sensor is present
+     * @return <code>Optional&lt;Sensor&gt;</code> The closest sensor. Empty if no sensor is present
      */
     private Optional<Sensor> closestSensor() {
         // If no sensor is present, return an empty container

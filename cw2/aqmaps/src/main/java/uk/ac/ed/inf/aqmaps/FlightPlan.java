@@ -1,10 +1,10 @@
 package uk.ac.ed.inf.aqmaps;
 
 import com.mapbox.geojson.LineString;
-import com.mapbox.geojson.Point;
 
 import java.awt.geom.Point2D;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -86,7 +86,7 @@ public class FlightPlan {
 
     /**
      * Method to generate a String representation of a FlightPlan.
-     * This is a format according to {@link FlightPlanComponent::toString}
+     * This is a format according to {@link FlightPlanComponent#toString}
      *
      * @return String The resulting FlightPlan
      */
@@ -100,7 +100,7 @@ public class FlightPlan {
 
 
     /**
-     * This is a helper class for the FlightPlanComponent.
+     * This is a inner class for the FlightPlanComponent.
      * It represents one single entry of a FlightPlan. It has all the information
      * needed to fill a flightpath file as required by coursework specification.
      */
